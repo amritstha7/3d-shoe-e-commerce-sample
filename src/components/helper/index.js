@@ -1,26 +1,38 @@
 export const navLinks = [
   {
-    id: "about",
-    title: "About",
+    id: "store",
+    title: "Find a Store",
     submenu: [
-      { id: "team", title: "Our Team" },
-      { id: "history", title: "Our History" },
+      // { id: "team", title: "Our Team" },
+      // { id: "history", title: "Our History" },
     ],
   },
   {
-    id: "work",
-    title: "Work",
+    id: "Help",
+    title: "Help",
     submenu: [
-      { id: "projects", title: "Projects" },
-      { id: "services", title: "Services" },
+      { id: "Help", title: "Help" },
+      { id: "Order", title: "Order Status" },
+      { id: "Dispatch ", title: "and Delivery" },
+      { id: "Returns", title: "Returns" },
+      { id: "Size Charts", title: "Size Charts" },
+      { id: "Contact", title: "Contact Us" },
     ],
   },
   {
-    id: "contact",
-    title: "Contact",
+    id: "Join",
+    title: "Join Us",
     submenu: [
-      { id: "support", title: "Support" },
-      { id: "locations", title: "Locations" },
+      // { id: "support", title: "Support" },
+      // { id: "locations", title: "Locations" },
+    ],
+  },
+  {
+    id: "Sign",
+    title: "Sign In",
+    submenu: [
+      // { id: "support", title: "Support" },
+      // { id: "locations", title: "Locations" },
     ],
   },
 ];
