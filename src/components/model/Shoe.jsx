@@ -8,28 +8,48 @@ import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import { EffectComposer } from "@react-three/postprocessing";
 
 const modelSettings = new Map([
-  ["/jordan/scene.gltf", { scale: 0.70, positionY: -2 }],
-  ["/jordan3/scene.gltf", { scale: 24.0, positionY: -3.40 }],
-  ["/jordan2/scene.gltf", { scale: 24, positionY: -1.30 }],
-  // ["/air/scene.gltf",{ scale:10, positionY:-2}],
+  ["/jordan/scene.gltf", { scale: 0.70, positionY: -2, positionX: 0, positionZ: 0 }],
+  ["/jordan3/scene.gltf", { scale: 24.0, positionY: -3.40, positionX: 0, positionZ: 0 }],
+  ["/jordan2/scene.gltf", { scale: 24, positionY: -1.30, positionX: 0, positionZ: 0 }],
 ]);
 
 function Shoe({ model }) {
   const { scene } = useGLTF(model.path, true);
-  const settings = modelSettings.get(model.path) || { scale: 1, positionY: 0 };
+  const settings = modelSettings.get(model.path) || { scale: 1, positionY: 0, positionX: 0, positionZ: 0 };
 
   useEffect(() => {
-    console.log("Loading model:", model.path);
-    scene.scale.set(settings.scale, settings.scale, settings.scale);
-    scene.position.y = settings.positionY;
-    scene.needsUpdate = true;
+    const handleResize = () => {
+      const width = window.innerWidth;
+      let scale = settings.scale;
+      let positionX = settings.positionX;
+      let positionY = settings.positionY;
+      let positionZ = settings.positionZ;
+
+      // Adjust scale and positions if screen width is less than 650px
+      if (width < 650) {
+        scale *= 0.47; // Reduce scale
+        positionY *= 0.4; // Adjust Y position to keep the model centered vertically
+        // Optionally adjust positionX and positionZ to center horizontally
+      }
+
+      scene.scale.set(scale, scale, scale);
+      scene.position.set(positionX, positionY, positionZ);
+      scene.needsUpdate = true;
+    };
+
+    handleResize(); // Call once on mount
+    window.addEventListener("resize", handleResize); // Add listener for resize
+
+    return () => {
+      window.removeEventListener("resize", handleResize); // Clean up on unmount
+    };
   }, [model.path, scene, settings]);
 
   return (
     <primitive
       key={model.path}
       object={scene}
-      rotation={[0, 0, 0]} // can update 
+      rotation={[0, 0, 0]} // adjust if needed
     />
   );
 }
@@ -73,23 +93,26 @@ const ShoeCanvas = () => {
               <ContactShadows 
                 position={[0, -1.8, 0]} 
                 opacity={0.75} 
-                scale={10} 
-                blur={2.5} 
-                far={2.5} 
+                scale={[20, 20, 20]} 
+                blur={0.9} 
+                far={5.5} 
               />
               <Environment preset="sunset" />
               <OrbitControls
                 autoRotate
                 enableZoom={false}
+                enablePan={true}  // Allow panning up and down
+                // maxPolarAngle={Math.PI}  // Allow full vertical rotation
+                minPolarAngle={0}  // Allow full vertical rotation
                 maxPolarAngle={Math.PI / 2}
-                minPolarAngle={Math.PI / 2}
-                autoRotateSpeed={2}
+                // minPolarAngle={Math.PI / 2}
+                autoRotateSpeed={3}
               />
               <Suspense fallback={<Loader />}>
                 <Shoe model={model} />
               </Suspense>
               <EffectComposer>
-                {/* <Bloom intensity={0.5} luminanceThreshold={0.2} luminanceSmoothing={1} /> */}
+                {/* Add post-processing effects here */}
               </EffectComposer>
             </Canvas>
           </div>
