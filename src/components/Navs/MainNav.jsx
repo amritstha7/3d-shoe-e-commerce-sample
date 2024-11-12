@@ -11,7 +11,9 @@ import { useState } from "react";
 import { TfiAlignJustify } from "react-icons/tfi";
 
 import React from "react";
-import InBag from "../Inbag";
+import InBag from "../InBag";
+
+
 import InFav from "../InFav";
 import { c } from "maath/dist/index-0332b2ed.esm";
 import { n } from "maath/dist/misc-19a3ec46.esm";
