@@ -6,11 +6,11 @@ import { models } from "../../../public";
 import Loader from "../Loader"; 
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import { EffectComposer } from "@react-three/postprocessing";
-
+import SliderBanner from "./SliderBanner";
 const modelSettings = new Map([
-  ["/jordan/scene.gltf", { scale: 0.70, positionY: -2, positionX: 0, positionZ: 0 }],
   ["/jordan3/scene.gltf", { scale: 24.0, positionY: -3.40, positionX: 0, positionZ: 0 }],
   ["/jordan2/scene.gltf", { scale: 24, positionY: -1.30, positionX: 0, positionZ: 0 }],
+  ["/jordan/scene.gltf", { scale: 0.70, positionY: -2, positionX: 0, positionZ: 0 }],
 ]);
 
 function Shoe({ model }) {
@@ -66,18 +66,22 @@ const ShoeCanvas = () => {
   };
 
   useEffect(() => {
-    console.log("Current Model Index:", currentModelIndex);
+    // console.log("Current Model Index:", currentModelIndex);
   }, [currentModelIndex]);
 
   return (
-    <div className="relative overflow-hidden">
+    <div>
+      <div >
+<SliderBanner/>
+      </div>
+      <div className="relative overflow-hidden z-10  ">
       <div
         className="flex transition-transform duration-500"
         style={{ transform: `translateX(-${currentModelIndex * 100}%)` }}
       >
         {models.map((model, index) => (
           <div key={model.path} className="flex-shrink-0 w-full">
-            <Canvas shadows style={{ height: "90vh", width: "100%" }}>
+            <Canvas shadows style={{ height: "60vh", width: "100%" }}>
               <PerspectiveCamera makeDefault position={[4, 5, 6]} />
               
               <ambientLight intensity={0.001} />
@@ -103,9 +107,9 @@ const ShoeCanvas = () => {
                 enableZoom={false}
                 enablePan={true}  // Allow panning up and down
                 // maxPolarAngle={Math.PI}  // Allow full vertical rotation
-                minPolarAngle={0}  // Allow full vertical rotation
+                // minPolarAngle={0}  // Allow full vertical rotation
                 maxPolarAngle={Math.PI / 2}
-                // minPolarAngle={Math.PI / 2}
+                minPolarAngle={Math.PI / 2}
                 autoRotateSpeed={3}
               />
               <Suspense fallback={<Loader />}>
@@ -130,6 +134,7 @@ const ShoeCanvas = () => {
       >
         <BsChevronCompactRight size={50} />
       </button>
+    </div>
     </div>
   );
 };
